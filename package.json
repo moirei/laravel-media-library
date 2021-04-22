@@ -1,0 +1,28 @@
+{
+  "name": "laravel-media-library",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-active-header-links": "^1.8.2",
+    "@vuepress/plugin-pwa": "^1.8.2",
+    "@vuepress/plugin-register-components": "^1.8.2",
+    "@vuepress/plugin-search": "^1.8.2",
+    "vuepress": "^1.8.2",
+    "vuepress-plugin-seo": "^0.1.4"
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moirei/laravel-media-library.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moirei/laravel-media-library/issues"
+  },
+  "homepage": "https://moirei.github.io/laravel-media-library/"
+}
