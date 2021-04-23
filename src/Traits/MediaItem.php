@@ -15,6 +15,7 @@ trait MediaItem
    * @var array
    */
   protected $public_file_fields = [
+    'created_at', 'updated_at',
     'id', 'name', 'description',
     'image', 'extension',
     'private', 'disk', 'size', 'location',
@@ -25,6 +26,7 @@ trait MediaItem
    * @var array
    */
   protected $public_folder_fields = [
+    'created_at', 'updated_at',
     'id', 'name', 'description',
     'private', 'disk', 'size', 'location',
     'folders', 'files',

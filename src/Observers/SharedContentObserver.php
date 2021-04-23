@@ -31,9 +31,10 @@ class SharedContentObserver
     }
 
     // Set defaults
+    $attributes = array_keys($shareable->getAttributes());
     $table = $shareable->getTable();
     foreach (config('media-library.shared_content.defaults', []) as $key => $value) {
-      if (Schema::hasColumn($table, $key) and $shareable->isFillable($key)) {
+      if (Schema::hasColumn($table, $key) and $shareable->isFillable($key) and !in_array($key, $attributes)) {
         $shareable->setAttribute($key, $value);
       }
     }

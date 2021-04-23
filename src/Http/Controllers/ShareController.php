@@ -35,6 +35,7 @@ class ShareController extends Controller
 
     return view('media-library::content')->with([
       'total_size' => $total / 1e6,
+      'is_auth' => !!count($shareable->access_keys),
       'files' => $files,
       'folders' => $folders,
       'can_remove' => $shareable->can_remove,

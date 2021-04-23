@@ -2,6 +2,7 @@
 
 namespace MOIREI\MediaLibrary\Http\Controllers;
 
+use App\Rules\SharedContentTypes;
 use App\Rules\StorageDisk;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use MOIREI\MediaLibrary\Api;
 use MOIREI\MediaLibrary\Upload;
 use Illuminate\Support\Facades\Storage;
+use MOIREI\MediaLibrary\Models\SharedContent;
 
 class ApiController extends Controller
 {
@@ -393,12 +395,77 @@ class ApiController extends Controller
    * Get file downloadable link
    *
    * @param Model $file
+   * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\JsonResponse
    */
-  public function downloadableLink(Model $file)
+  public function downloadableLink(Request $request, Model $file)
   {
-    return response()->json([
-      'url' => Api::getDowloadUrl($file)
+    $min_ttl = 60 * 30; // 30 mins
+    $request->validate([
+      'ttl' => "integer|min:$min_ttl",
     ]);
+    $ttl = now()->addSeconds($request->get('ttl', $min_ttl));
+
+    return response()->json([
+      'url' => Api::getDowloadUrl($file, $ttl)
+    ]);
+  }
+
+  /**
+   * Get file shareable link
+   *
+   * @param Model $file
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function shareablebleLink(Request $request, Model $file)
+  {
+    $request->validate([
+      'name' =>                 'string|max:64',
+      'description' =>          'string|max:1024',
+      'public' =>               'boolean',
+      'access_emails' =>        'array|min:1',
+      "access_emails.*"  =>     'distinct|email',
+      'access_type' =>          SharedContentTypes::class,
+      "access_keys"    =>       'exclude_if:public,true|required|array|min:1',
+      "access_keys.*"  =>       'exclude_if:public,true|required|string|distinct|min:6',
+      'expires_at' =>           'date|after:today',
+      'can_remove' =>           'boolean',
+      'can_upload' =>           'boolean',
+      'max_downloads' =>        'integer|min:1',
+      'max_upload_size' =>      'integer|min:1000',
+      'allowed_upload_types' => 'array',
+      // 'meta' => 'json',
+    ]);
+
+    $shareable = SharedContent::make($file);
+    $shareable->fill(
+      $request->only([
+        'name', 'description',
+        'public', 'access_emails', 'access_type', 'access_keys',
+        'expires_at', 'can_remove', 'can_upload',
+        'max_downloads', 'max_upload_size', 'allowed_upload_types',
+      ])
+    );
+
+    $shareable->save();
+    $shareable->fresh();
+
+    return response()->json([
+      'id' => $shareable->id,
+      'url' => $shareable->url(),
+    ]);
+  }
+
+  /**
+   * Get folder shareable link
+   *
+   * @param Model $folder
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function shareablebleFolderLink(Request $request, Model $folder)
+  {
+    return $this->shareablebleLink($request, $folder);
   }
 }

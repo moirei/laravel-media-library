@@ -21,6 +21,17 @@ $shareable = SharedContent::make($folder)
     		->save();
 ```
 
+Since `SharedContent` is a `Model`, you can also fill it with an array
+```php
+$shareable->fill(
+    $request->only([
+        'name', 'description',
+        'public', 'access_emails', 'access_type', 'access_keys',
+        'expires_at', 'can_remove', 'can_upload',
+        'max_downloads', 'max_upload_size', 'allowed_upload_types',
+    ])
+);
+```
 
 
 **Get the shareable url**

@@ -95,6 +95,7 @@
                         {!! config('media-library.shared_content.ui.title') !!}</h1>
                 </div>
                 <div class="ml-auto flex items-center">
+                    @if($is_auth)
                     <a href="{{ $signout_url }}"
                         class="py-2 px-3 rounded-md shadow space-x-3 flex items-center bg-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
@@ -104,6 +105,7 @@
                         </svg>
                         <span class="hidden md:inline">Signout</span>
                     </a>
+                    @endif
                 </div>
             </div>
             <div class="flex-grow flex overflow-x-hidden">

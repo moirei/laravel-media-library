@@ -1,5 +1,15 @@
 export default [
   {
+    field: 'created_at',
+    type: 'string (ISO 8601)',
+    description: 'The time at which the file was created',
+  },
+  {
+    field: 'updated_at',
+    type: 'string (ISO 8601)',
+    description: 'The last time the file was updated',
+  },
+  {
     field: 'id',
     type: 'string',
     description: 'The file ID',

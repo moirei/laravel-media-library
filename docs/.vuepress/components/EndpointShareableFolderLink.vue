@@ -1,8 +1,8 @@
 <template>
   <endpoint
-    name="Get downloadable link"
+    name="Get folder shareable link"
     method="POST"
-    endpoint="downloadable-link/{file-id}"
+    endpoint="folder/share/{file-id}"
     v-bind="data"
   >
     <slot></slot>
@@ -11,10 +11,10 @@
 
 <script>
 import Endpoint from "./Endpoint";
-import data from "./endpoints/data/downloadable-link";
+import data from "./endpoints/data/share";
 
 export default {
-  name: "EndpointDownloadableLink",
+  name: "EndpointShareableFolderLink",
   components: { Endpoint },
   data: () => ({ data }),
 };

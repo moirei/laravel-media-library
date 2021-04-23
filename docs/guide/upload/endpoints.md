@@ -26,6 +26,8 @@
 
 <endpoint-component name="downloadable-link" />
 
+<endpoint-component name="shareable-link" />
+
 ## Folder Management
 
 <endpoint-component name="folder-create" />
@@ -35,6 +37,8 @@
 <endpoint-component name="folder-move" />
 
 <endpoint-component name="folder-delete" />
+
+<endpoint-component name="shareable-folder-link" />
 
 
 

@@ -42,7 +42,9 @@ Route::middleware('media.protected')->group(function () {
   Route::post('/folder/move/{folder}',                        ApiController::class . '@folderMove')->middleware(middleware('folder.move'))->name('folder.move');
   Route::delete('/folder/delete/{folder}',                    ApiController::class . '@folderDelete')->middleware(middleware('folder.delete'))->name('folder.delete');
   Route::post('/browse',                                      ApiController::class . '@browse')->middleware(middleware('browse'))->name('browse');
-  Route::get('/downloadable-link/{file}',                     ApiController::class . '@downloadableLink')->middleware(middleware('downloadable-link'))->name('downloadable-link');
+  Route::post('/downloadable-link/{file}',                    ApiController::class . '@downloadableLink')->middleware(middleware('downloadable-link'))->name('downloadable-link');
+  Route::post('/share/{file}',                                ApiController::class . '@shareablebleLink')->middleware(middleware('share'))->name('share');
+  Route::post('/folder/share/{folder}',                       ApiController::class . '@shareablebleLink')->middleware(middleware('folder.share'))->name('folder.share');
 
   Route::post('/attachment',                                  AttachmentController::class . '@store')->middleware(middleware('attachment.store'))->name('attachment.store');
   Route::delete('/attachment/{attachment}',                   AttachmentController::class . '@destroy')->middleware(middleware('attachment.destroy'))->name('attachment.destroy');
