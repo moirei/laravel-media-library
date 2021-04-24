@@ -46,7 +46,11 @@ class AttachmentController extends Controller
 
     $attachment = $upload->save();
 
-    return response()->json(['url' => $attachment->url]);
+    return response()->json([
+      'id' => $attachment->id,
+      'alt' => $attachment->alt,
+      'url' => $attachment->url,
+    ]);
   }
 
   /**

@@ -17,6 +17,7 @@ class Upload
   protected UploadedFile $upload;
   protected string $name;
   protected string | null $id = null;
+  protected string | null $description = null;
   protected string $filename;
   protected string $clientOriginalName;
   protected string $disk;
@@ -118,6 +119,18 @@ class Upload
   public function name(string $name)
   {
     $this->name = $name;
+    return $this;
+  }
+
+  /**
+   * Set upload file description
+   *
+   * @param string $description
+   * @return self
+   */
+  public function description(string $description)
+  {
+    $this->description = $description;
     return $this;
   }
 

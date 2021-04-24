@@ -43,6 +43,14 @@ module.exports = {
           '/guide/usage/api',
         ],
       },
+      {
+        title: 'Frontend',
+        collapsable: false,
+        sidebarDepth: 1,
+        children: [
+          '/js-client',
+        ],
+      },
       // 'packages'
     ],
     nav: [
