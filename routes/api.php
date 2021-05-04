@@ -5,20 +5,22 @@ use MOIREI\MediaLibrary\Http\Controllers\ApiController;
 use MOIREI\MediaLibrary\Http\Controllers\ShareController;
 use MOIREI\MediaLibrary\Http\Controllers\AttachmentController;
 
-function middleware(string $key): array
-{
-  $middleware = collect(config('media-library.route.middleware'))->get($key, []);
+if(!function_exists("middleware")){
+  function middleware(string $key): array
+  {
+    $middleware = collect(config('media-library.route.middleware'))->get($key, []);
 
-  if (is_string($middleware)) {
-    $middleware = [$middleware];
+    if (is_string($middleware)) {
+      $middleware = [$middleware];
+    }
+
+    if (func_num_args() > 1) {
+      $extra = array_slice(func_get_args(), 1);
+      $middleware = array_merge($middleware, $extra);
+    }
+
+    return $middleware;
   }
-
-  if (func_num_args() > 1) {
-    $extra = array_slice(func_get_args(), 1);
-    $middleware = array_merge($middleware, $extra);
-  }
-
-  return $middleware;
 }
 
 Route::get('/get/public/{file}/{width?}/{height?}',           ApiController::class . '@getPublic')->middleware(middleware('file'))->name('file');
