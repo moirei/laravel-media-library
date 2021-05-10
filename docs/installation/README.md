@@ -6,6 +6,11 @@ prev: /
 
 # Installation
 
+
+```bash
+composer require moirei/laravel-media-library
+```
+
 ## Prepare the database
 
 ```php
@@ -25,12 +30,6 @@ Setup symbolic links in order to out url access to local public storage.
 ```bash
 php artisan storage:link
 ```
-
-
-```bash
-composer require moirei/laravel-media-library
-```
-
 
 
 ## Scheduling
