@@ -11,12 +11,12 @@ use Illuminate\Http\Request;
  */
 class ShareResolver
 {
-  public function handle(Request $request, Closure $next)
-  {
-    // $path = $request->query('path', '/');
-    // $request->request->add(['meta', 'value']);
+    public function handle(Request $request, Closure $next)
+    {
+        // $path = $request->query('path', '/');
+        // $request->request->add(['meta', 'value']);
 
-    // Perform action
-    return $next($request);
-  }
+        // Perform action
+        return $next($request);
+    }
 }

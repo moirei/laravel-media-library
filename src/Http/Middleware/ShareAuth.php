@@ -7,21 +7,21 @@ use Illuminate\Http\Request;
 
 class ShareAuth
 {
-  public function handle(Request $request, Closure $next)
-  {
-    $shareable = $request->route('shared');
-    if (data_get($shareable, 'public')) {
-      return $next($request);
+    public function handle(Request $request, Closure $next)
+    {
+        $shareable = $request->route('shared');
+        if (data_get($shareable, 'public')) {
+            return $next($request);
+        }
+
+        if (!empty(session("authenticated:$shareable->id"))) {
+            $request->session()->put("authenticated:$shareable->id", time());
+            return $next($request);
+        }
+
+        $name = config('media-library.route.name');
+        $shared = $request->route('shared');
+
+        return redirect()->route("${name}share.auth", ['shared' => $shared]);
     }
-
-    if (!empty(session("authenticated:$shareable->id"))) {
-      $request->session()->put("authenticated:$shareable->id", time());
-      return $next($request);
-    }
-
-    $name = config('media-library.route.name');
-    $shared = $request->route('shared');
-
-    return redirect()->route("${name}share.auth", ['shared' => $shared]);
-  }
 }

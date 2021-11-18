@@ -7,21 +7,21 @@ use Illuminate\Http\Request;
 
 class ShareAccess
 {
-  public function handle(Request $request, Closure $next)
-  {
-    $shareable = $request->route('shared');
+    public function handle(Request $request, Closure $next)
+    {
+        $shareable = $request->route('shared');
 
-    if ($shareable) {
-      if ($shareable->expired) {
-        abort(400);
-      }
-      if ($user = $request->user()) {
-        if (!$shareable->canAccess($user)) {
-          abort(401);
+        if ($shareable) {
+            if ($shareable->expired) {
+                abort(400);
+            }
+            if ($user = $request->user()) {
+                if (!$shareable->canAccess($user)) {
+                    abort(401);
+                }
+            }
         }
-      }
-    }
 
-    return $next($request);
-  }
+        return $next($request);
+    }
 }

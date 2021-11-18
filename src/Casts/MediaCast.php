@@ -4,5 +4,5 @@ namespace MOIREI\MediaLibrary\Casts;
 
 class MediaCast
 {
-  //
+    //
 }

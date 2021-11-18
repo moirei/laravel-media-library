@@ -47,19 +47,24 @@ class CreateMediaTables extends Migration
             $table->json('responsive')->nullable();
             $table->softDeletes();
 
-            $table->nullableMorphs('model');
+            $table->string('model_type')->nullable();
+            $table->string('model_id')->nullable();
 
             $table->uuid('folder_id')->nullable();
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
 
             $table->timestamps();
+            $table->index(['model_type', 'model_id']);
         });
 
         Schema::create('fileables', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->morphs('fileable');
+            $table->string('fileable_type');
+            $table->string('fileable_id');
             $table->uuid('file_id');
             $table->foreign('file_id')->references('id')->on('files');
+
+            $table->index(['fileable_type', 'fileable_id']);
         });
 
         Schema::create('attachments', function (Blueprint $table) {
@@ -71,9 +76,11 @@ class CreateMediaTables extends Migration
             $table->string('location')->nullable();
             $table->string('attachment');
             $table->string('attachable_type')->nullable();
-            $table->unsignedInteger('attachable_id')->nullable();
+            $table->string('attachable_id')->nullable();
             $table->uuid('attachable_uuid')->nullable();
+
             $table->timestamps();
+            $table->index(['attachable_type', 'attachable_id']);
         });
 
         Schema::create('shared_contents', function (Blueprint $table) {
@@ -98,10 +105,11 @@ class CreateMediaTables extends Migration
             $table->softDeletes();
 
             $table->string('shareable_type');
-            $table->unsignedInteger('shareable_id')->nullable();
+            $table->string('shareable_id');
             $table->uuid('shareable_uuid')->nullable();
 
             $table->timestamps();
+            $table->index(['shareable_type', 'shareable_id']);
         });
     }
 
