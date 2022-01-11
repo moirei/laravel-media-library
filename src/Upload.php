@@ -480,7 +480,6 @@ class Upload
      */
     public static function fromUrl(string $url, string $name = null): Upload
     {
-        //
         if (Str::startsWith($url, ['http://', 'https://'])) {
             if (!$stream = @fopen($url, 'r')) {
                 throw FileValidationException::unreachableUrl($url);

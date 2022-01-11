@@ -154,7 +154,7 @@ class ApiController extends Controller
             $upload->cleanFilename(config('media-library.clean_file_name.special_characters', false));
 
         $location = $request->get('location', '/');
-        $namespace = $request->header('Namespace');
+        $namespace = $request->header('X-Workspace');
 
         $upload->location($location, $namespace);
 
@@ -213,7 +213,7 @@ class ApiController extends Controller
         ]);
 
         $location = $request->get('location');
-        $namespace = $request->header('Namespace');
+        $namespace = $request->header('X-Workspace');
 
         if (Api::isUuid($location)) {
             $folderClass = config('media-library.models.folder');
@@ -267,7 +267,7 @@ class ApiController extends Controller
         ]);
 
         $location = $request->get('location', '/');
-        $namespace = $request->header('Namespace');
+        $namespace = $request->header('X-Workspace');
         $folderClass = config('media-library.models.folder');
 
 
@@ -333,7 +333,7 @@ class ApiController extends Controller
         ]);
 
         $location = $request->get('location');
-        $namespace = $request->header('Namespace');
+        $namespace = $request->header('X-Workspace');
 
         if (Api::isUuid($location)) {
             $folderClass = config('media-library.models.folder');
@@ -384,7 +384,7 @@ class ApiController extends Controller
         ]);
 
         $location = $request->get('location');
-        $namespace = $request->header('Namespace');
+        $namespace = $request->header('X-Workspace');
 
         return response()->json(
             Api::browse($location, $namespace)

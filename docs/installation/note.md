@@ -17,7 +17,7 @@ It's assumed that an attachment is an image file. Therefore automatically persis
 
 ## Namespacing
 
-A `Namespace` value provided in the request header will automatically be used to make the request context. This means a request to access/upload files to folder `products/chargers` will resolve `<namespace>/products/chargers` as the working directory.
+A `X-Workspace` value provided in the request header will automatically be used to make the request context. This means a request to access/upload files to folder `products/chargers` will resolve `<namespace>/products/chargers` as the working directory.
 
 This is intended for multi-vendor or strict storage space applications. You can add custom middleware to the media library route to guard your users according to their workspace.
 

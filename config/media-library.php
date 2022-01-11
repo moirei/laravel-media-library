@@ -241,6 +241,9 @@ return [
 
         # Route name
         'name' => 'media.',
+
+        # Disable all package routes and middleware
+        'disabled' => false,
     ],
 
     /*

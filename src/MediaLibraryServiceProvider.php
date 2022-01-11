@@ -66,47 +66,49 @@ class MediaLibraryServiceProvider extends ServiceProvider
         $sharedContentClass::observe(new SharedContentObserver());
         Attachment::observe(new AttachmentObserver());
 
-        $middleware = [SubstituteBindings::class];
+        if (!config('media-library.route.disabled', false)) {
+            $middleware = [SubstituteBindings::class];
 
-        // get global middleware
-        foreach (config('media-library.route.middleware', []) as $key => $value) {
-            if (!is_string($key) and ($key !== 'media.protected')) {
-                array_push($middleware, $value);
+            // get global middleware
+            foreach (config('media-library.route.middleware', []) as $key => $value) {
+                if (!is_string($key) and ($key !== 'media.protected')) {
+                    array_push($middleware, $value);
+                }
             }
+
+            Route::group([
+                'as' => config('media-library.route.name'),
+                'prefix' => config('media-library.route.prefix'),
+                'domain' => config('media-library.route.domain'),
+                'middleware' => $middleware,
+            ], function () {
+                $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+            });
+
+            $this->loadViewsFrom(__DIR__ . '/../resources/views', 'media-library');
+
+            Route::aliasMiddleware('media.signed', ValidateSignature::class);
+            Route::aliasMiddleware('media.share.resolve', ShareResolver::class);
+            Route::aliasMiddleware('media.share.access', ShareAccess::class);
+            Route::aliasMiddleware('media.share.auth', ShareAuth::class);
+            Route::pushMiddlewareToGroup('media.share', ShareResolver::class);
+            Route::pushMiddlewareToGroup('media.share', ShareAccess::class);
+            Route::pushMiddlewareToGroup('media.share', ShareAuth::class);
+            Route::pushMiddlewareToGroup('media.session', StartSession::class);
+            Route::pushMiddlewareToGroup('media.session', ShareErrorsFromSession::class);
+            Route::pushMiddlewareToGroup('media.session', VerifyCsrfToken::class);
+            Route::pushMiddlewareToGroup('media.protected', ProtectGroupPlaceholder::class);
+
+            $middlewareProtected = collect(config('media-library.route.middleware'))->get('media.protected', []);
+            if (is_string($middlewareProtected)) $middlewareProtected = [$middlewareProtected];
+            foreach ($middlewareProtected  as $middleware) {
+                Route::pushMiddlewareToGroup('media.protected', $middleware);
+            }
+
+            Route::model('file', $fileClass);
+            Route::model('folder', $folderClass);
+            Route::model('shared', $sharedContentClass);
         }
-
-        Route::group([
-            'as' => config('media-library.route.name'),
-            'prefix' => config('media-library.route.prefix'),
-            'domain' => config('media-library.route.domain'),
-            'middleware' => $middleware,
-        ], function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
-        });
-
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'media-library');
-
-        Route::aliasMiddleware('media.signed', ValidateSignature::class);
-        Route::aliasMiddleware('media.share.resolve', ShareResolver::class);
-        Route::aliasMiddleware('media.share.access', ShareAccess::class);
-        Route::aliasMiddleware('media.share.auth', ShareAuth::class);
-        Route::pushMiddlewareToGroup('media.share', ShareResolver::class);
-        Route::pushMiddlewareToGroup('media.share', ShareAccess::class);
-        Route::pushMiddlewareToGroup('media.share', ShareAuth::class);
-        Route::pushMiddlewareToGroup('media.session', StartSession::class);
-        Route::pushMiddlewareToGroup('media.session', ShareErrorsFromSession::class);
-        Route::pushMiddlewareToGroup('media.session', VerifyCsrfToken::class);
-        Route::pushMiddlewareToGroup('media.protected', ProtectGroupPlaceholder::class);
-
-        $middlewareProtected = collect(config('media-library.route.middleware'))->get('media.protected', []);
-        if (is_string($middlewareProtected)) $middlewareProtected = [$middlewareProtected];
-        foreach ($middlewareProtected  as $middleware) {
-            Route::pushMiddlewareToGroup('media.protected', $middleware);
-        }
-
-        Route::model('file', $fileClass);
-        Route::model('folder', $folderClass);
-        Route::model('shared', $sharedContentClass);
     }
 
     public function register()

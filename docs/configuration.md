@@ -28,13 +28,13 @@ For namespacing uploads and access, the package allows providing a namespace at 
 
 For multi-vendor, feel free to add a gateway middleware in `route.middleware` to verify your users' namespace.
 
-Allow the `Namespace` header in `config/cors.php`:
+Allow the `X-Workspace` header in `config/cors.php`:
 
 ```php
 ...
 'allowed_headers' => [
     ...
-    'Namespace'
+    'X-Workspace'
 ],
 ```
 
