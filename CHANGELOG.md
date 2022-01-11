@@ -11,3 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## 1.0.2
 - fix: add `description` pipe to `MOIREI\MediaLibrary\Upload`
 - fix: attachment API controller to return `id` and `alt` after store
+
+## 1.0.4
+- feat: ability to disable package routes and middleware
+- nit: rename workspace header from `Namespace` to `X-Workspace`.
